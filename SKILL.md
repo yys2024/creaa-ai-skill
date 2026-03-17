@@ -17,16 +17,16 @@ Top up API credits at: https://creaa.ai/pricing
 
 ### Image Models
 
-| Model ID | Name | Credits/Image | Default Ratio | Max Ref Images | Capabilities |
-|----------|------|--------------|---------------|----------------|-------------|
-| `seedream-4.5` | Seedream 4.5 | 4 | 1:1 | 4 | text_to_image, image_to_image |
-| `nano-banana-2` | Nano Banana 2 | 10 | auto | 14 | text_to_image, image_to_image, multi_image_edit |
-| `nano-banana-pro` | Nano Banana Pro | 20 | auto | 10 | text_to_image, image_to_image, multi_image_edit |
-| `gpt-image-1.5` | GPT Image 1.5 | 15 | 1:1 | 10 | text_to_image, image_to_image, multi_image_edit |
-| `z-image-turbo` | Z-Image Turbo | 1 | 1:1 | - | text_to_image |
+| Model ID | Name | Credits/Image | Free Daily | Default Ratio | Max Ref Images | Capabilities |
+|----------|------|--------------|-----------|---------------|----------------|-------------|
+| `seedream-5.0` | Seedream 5.0 | 4 | 10 | 1:1 | 4 | text_to_image, image_to_image |
+| `nano-banana-2` | Nano Banana 2 | 10 | 5 | auto | 14 | text_to_image, image_to_image, multi_image_edit |
+| `nano-banana-pro` | Nano Banana Pro | 20 | 1 | auto | 10 | text_to_image, image_to_image, multi_image_edit |
+| `gpt-image-1.5` | GPT Image 1.5 | 15 | 0 | 1:1 | 10 | text_to_image, image_to_image, multi_image_edit |
+| `z-image-turbo` | Z-Image Turbo | 0 | - | 1:1 | - | text_to_image |
 
 **Aspect ratio options per model:**
-- `seedream-4.5`: 1:1, 16:9, 9:16, 4:3, 3:4
+- `seedream-5.0`: auto, 1:1, 3:4, 4:3, 16:9, 9:16, 2:3, 3:2, 21:9
 - `nano-banana-2` / `nano-banana-pro`: auto, 1:1, 9:16, 16:9, 3:2, 2:3
 - `gpt-image-1.5`: 1:1, 3:2, 2:3
 - `z-image-turbo`: 1:1, 9:16, 16:9
@@ -35,14 +35,13 @@ Top up API credits at: https://creaa.ai/pricing
 
 | Model ID | Name | Credits/sec | Durations (sec) | Default Duration | Capabilities |
 |----------|------|------------|-----------------|-----------------|-------------|
-| `veo-3.1` | Veo 3.1 | 30 | 8 | 8 | text_to_video, image_to_video |
+| `veo-3.1` | Veo 3.1 | 22 | 8 | 8 | text_to_video, image_to_video |
 | `seedance-2.0` | Seedance 2.0 | 25 | 5, 10, 15 | 5 | text_to_video, image_to_video |
-| `sora-2-pro` | Sora 2 Pro | 18 | 4, 8, 12 | 12 | text_to_video, image_to_video |
-| `seedance-1.5-pro` | Seedance 1.5 Pro | 20 | 5, 8, 12 | 5 | text_to_video, image_to_video, first_last_frame |
-| `kling-3.0` | Kling 3.0 | 32 | 5, 10, 15 | 5 | text_to_video, image_to_video |
+| `sora-2-pro` | Sora 2 Pro | 12 | 4, 8, 12, 16, 20 | 12 | text_to_video, image_to_video |
+| `seedance-1.5-pro` | Seedance 1.5 Pro | 12 | 5, 8, 12 | 5 | text_to_video, image_to_video, first_last_frame |
+| `kling-3.0` | Kling 3.0 | 25 | 5, 10, 15 | 5 | text_to_video, image_to_video |
 | `hailuo-2.3` | Hailuo 2.3 | 25 | 6, 10 | 6 | text_to_video, image_to_video |
 | `runway-gen-4.5` | Runway Gen-4.5 | 30 | 5, 10 | 5 | image_to_video |
-| `sora-2` | Sora 2 | 10 | 10, 15 | 15 | text_to_video, image_to_video |
 
 **Aspect ratio options per model:**
 - `veo-3.1`: 16:9, 9:16
@@ -52,7 +51,6 @@ Top up API credits at: https://creaa.ai/pricing
 - `kling-3.0`: 16:9, 9:16
 - `hailuo-2.3`: 9:16, 16:9
 - `runway-gen-4.5`: 16:9, 9:16, 1:1, 4:3, 3:4, 21:9
-- `sora-2`: 9:16, 16:9
 
 ## Available Commands
 
@@ -76,7 +74,7 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/generate" \
 
 **Parameters:**
 - `prompt` (required): Image description
-- `model` (optional): Model ID from the image models table above. Default: `seedream-4.5`
+- `model` (optional): Model ID from the image models table above. Default: `nano-banana-2`
 - `aspect_ratio` (optional): Aspect ratio like `1:1`, `16:9`, `9:16`. Must match the model's supported ratios. Default varies by model.
 - `n` (optional): Number of images, 1-4. Default 1
 
@@ -86,7 +84,7 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/generate" \
   "success": true,
   "task_id": "abc123-def456",
   "task_type": "image",
-  "model": "seedream-4.5"
+  "model": "nano-banana-2"
 }
 ```
 
@@ -135,7 +133,7 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
 **Single-image edit parameters:**
 - `prompt` (required): Edit instruction
 - `image_url` (required for single-image edit): Public source image URL
-- `model` (optional): Model ID from the image models table above. Default: `seedream-4.5`
+- `model` (optional): Model ID from the image models table above. Default: `nano-banana-2`
 - `aspect_ratio` (optional): Must match the model's supported ratios
 - `n` (optional): Number of output images, 1-4. Default 1
 
@@ -157,7 +155,7 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
 **Multi-image edit notes:**
 - `image_urls`: 2-N public image URLs, where N depends on the model
 - Max reference images by model:
-  - `seedream-4.5`: up to 4 input images
+  - `seedream-5.0`: up to 4 input images
   - `nano-banana-2`: up to 14 input images
   - `nano-banana-pro`: up to 10 input images
   - `gpt-image-1.5`: up to 10 input images
@@ -170,7 +168,7 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
   "success": true,
   "task_id": "abc123-def456",
   "task_type": "image_edit",
-  "model": "seedream-4.5"
+  "model": "nano-banana-2"
 }
 ```
 
@@ -292,16 +290,17 @@ Usage is tracked against the API key's own credit pool (`api_credits`), not the 
 ## Model Selection Tips
 
 **Image models:**
-- `seedream-4.5` - Best quality, great default choice
-- `nano-banana-2` - Best default for multi-image editing / composition
-- `nano-banana-pro` - Higher quality image editing
+- `seedream-5.0` - Best quality, great default choice (10 free daily)
+- `nano-banana-2` - Best default for multi-image editing / composition (5 free daily)
+- `nano-banana-pro` - Higher quality image editing (1 free daily)
 - `gpt-image-1.5` - Strong image editing option via Replicate-backed path
-- `z-image-turbo` - Cheapest at 1 credit, fastest generation
+- `z-image-turbo` - Free, fastest generation
 
 **Video models:**
-- `veo-3.1` - Highest quality, 8s fixed duration
-- `sora-2` - Most affordable at 10 credits/sec
-- `sora-2-pro` - Good balance of quality and cost
+- `veo-3.1` - Highest quality, 8s fixed duration (22 credits/sec)
+- `sora-2-pro` - Best value with long durations up to 20s (12 credits/sec)
+- `seedance-1.5-pro` - Affordable with first_last_frame support (12 credits/sec)
+- `seedance-2.0` - High quality, flexible durations (25 credits/sec)
 - `runway-gen-4.5` - Image-to-video only, high quality
 
 ## Error Handling
