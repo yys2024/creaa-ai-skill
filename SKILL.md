@@ -112,10 +112,10 @@ Image generation typically takes 10-60 seconds. Poll every 5 seconds.
 ### Edit Image
 
 Use this endpoint for:
-- Single-image edit: `image_url`
-- Multi-image reference edit / composition: `image_urls`
+- Single-image edit: `image_url` or `image_data` (base64)
+- Multi-image reference edit / composition: `image_urls` or `image_data_list` (base64)
 
-**Step 1: Submit task**
+**Step 1: Submit task (with URL)**
 ```bash
 curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
   -H "Authorization: Bearer $CREAA_API_KEY" \
@@ -130,12 +130,30 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
   }'
 ```
 
+**Step 1: Submit task (with base64 image data)**
+```bash
+curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
+  -H "Authorization: Bearer $CREAA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Source: openclaw" \
+  -d '{
+    "prompt": "<edit prompt here>",
+    "image_data": "data:image/png;base64,iVBOR...",
+    "model": "<model_id>",
+    "aspect_ratio": "<ratio>",
+    "n": <count>
+  }'
+```
+
 **Single-image edit parameters:**
 - `prompt` (required): Edit instruction
-- `image_url` (required for single-image edit): Public source image URL
+- `image_url` (option A): Public source image URL
+- `image_data` (option B): Base64-encoded image data. Supports `data:image/png;base64,...` prefix or raw base64 string. Max 20MB.
 - `model` (optional): Model ID from the image models table above. Default: `nano-banana-2`
 - `aspect_ratio` (optional): Must match the model's supported ratios
 - `n` (optional): Number of output images, 1-4. Default 1
+
+Provide either `image_url` or `image_data` for single-image edit. If both are provided, `image_url` takes priority.
 
 **Multi-image edit / composition example:**
 ```bash
@@ -152,15 +170,17 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
   }'
 ```
 
+You can also use `image_data_list` with base64 strings instead of `image_urls`.
+
 **Multi-image edit notes:**
-- `image_urls`: 2-N public image URLs, where N depends on the model
+- `image_urls` or `image_data_list`: 2-N images, where N depends on the model
 - Max reference images by model:
   - `seedream-5.0`: up to 4 input images
   - `nano-banana-2`: up to 14 input images
   - `nano-banana-pro`: up to 10 input images
   - `gpt-image-1.5`: up to 10 input images
 - Only models with `multi_image_edit` capability support this mode
-- Only public `http(s)` URLs are accepted
+- URLs must be public `http(s)` URLs; base64 data is uploaded to storage automatically
 
 **Response:**
 ```json
@@ -214,9 +234,12 @@ curl -s -X POST "https://creaa.ai/api/open/v1/videos/generate" \
 - `prompt` (required): Video description
 - `model` (optional): Model ID from the video models table above. Default: `veo-3.1`
 - `mode` (optional): `text_to_video` (default) or `image_to_video`
-- `image_url` (required for image_to_video): URL of the source image
+- `image_url` (option A, required for image_to_video): URL of the source image
+- `image_data` (option B, required for image_to_video): Base64-encoded image data. Supports `data:image/png;base64,...` prefix or raw base64 string. Max 20MB.
 - `duration` (optional): Duration in seconds, must match the model's supported durations. Default varies by model.
 - `aspect_ratio` (optional): e.g. `16:9`, `9:16`, `1:1`. Must match the model's supported ratios.
+
+For `image_to_video` mode, provide either `image_url` or `image_data`. If both are provided, `image_url` takes priority.
 
 **Response:**
 ```json
