@@ -23,7 +23,7 @@ Top up API credits at: https://creaa.ai/pricing
 | `nano-banana-2` | Nano Banana 2 | 10 | 5 | auto | 14 | text_to_image, image_to_image, multi_image_edit |
 | `nano-banana-pro` | Nano Banana Pro | 20 | 1 | auto | 10 | text_to_image, image_to_image, multi_image_edit |
 | `gpt-image-1.5` | GPT Image 1.5 | 15 | 0 | 1:1 | 10 | text_to_image, image_to_image, multi_image_edit |
-| `z-image-turbo` | Z-Image Turbo | 0 | - | 1:1 | - | text_to_image |
+| `z-image-turbo` | Z-Image Turbo | 1 | - | 1:1 | - | text_to_image |
 
 **Aspect ratio options per model:**
 - `seedream-5.0`: auto, 1:1, 3:4, 4:3, 16:9, 9:16, 2:3, 3:2, 21:9
