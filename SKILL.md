@@ -22,13 +22,13 @@ Top up API credits at: https://creaa.ai/pricing
 | `seedream-5.0` | Seedream 5.0 | 4 | 10 | 1:1 | 4 | text_to_image, image_to_image |
 | `nano-banana-2` | Nano Banana 2 | 10 | 5 | auto | 14 | text_to_image, image_to_image, multi_image_edit |
 | `nano-banana-pro` | Nano Banana Pro | 20 | 1 | auto | 10 | text_to_image, image_to_image, multi_image_edit |
-| `gpt-image-1.5` | GPT Image 1.5 | 15 | 0 | 1:1 | 10 | text_to_image, image_to_image, multi_image_edit |
+| `gpt-image-2` | GPT Image 2.0 | 5-60 | 0 | 1:1 | 10 | text_to_image, image_to_image, multi_image_edit | supports `quality` |
 | `z-image-turbo` | Z-Image Turbo | 1 | - | 1:1 | - | text_to_image |
 
 **Aspect ratio options per model:**
 - `seedream-5.0`: auto, 1:1, 3:4, 4:3, 16:9, 9:16, 2:3, 3:2, 21:9
 - `nano-banana-2` / `nano-banana-pro`: auto, 1:1, 9:16, 16:9, 3:2, 2:3
-- `gpt-image-1.5`: 1:1, 3:2, 2:3
+- `gpt-image-2`: 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 2:1, 21:9
 - `z-image-turbo`: 1:1, 9:16, 16:9
 
 ### Video Models
@@ -77,6 +77,7 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/generate" \
 - `model` (optional): Model ID from the image models table above. Default: `nano-banana-2`
 - `aspect_ratio` (optional): Aspect ratio like `1:1`, `16:9`, `9:16`. Must match the model's supported ratios. Default varies by model.
 - `n` (optional): Number of images, 1-4. Default 1
+- `quality` (optional, `gpt-image-2` only): Resolution/quality tier. Default: `1k`. Options: `1k` / `low`, `2k` / `medium`, `4k` / `high`, `auto`
 
 **Response:**
 ```json
@@ -152,6 +153,7 @@ curl -s -X POST "https://creaa.ai/api/open/v1/images/edit" \
 - `model` (optional): Model ID from the image models table above. Default: `nano-banana-2`
 - `aspect_ratio` (optional): Must match the model's supported ratios
 - `n` (optional): Number of output images, 1-4. Default 1
+- `quality` (optional, `gpt-image-2` only): Resolution/quality tier. Default: `1k`. Options: `1k` / `low`, `2k` / `medium`, `4k` / `high`, `auto`
 
 Provide either `image_url` or `image_data` for single-image edit. If both are provided, `image_url` takes priority.
 
@@ -178,7 +180,7 @@ You can also use `image_data_list` with base64 strings instead of `image_urls`.
   - `seedream-5.0`: up to 4 input images
   - `nano-banana-2`: up to 14 input images
   - `nano-banana-pro`: up to 10 input images
-  - `gpt-image-1.5`: up to 10 input images
+  - `gpt-image-2`: up to 10 input images
 - Only models with `multi_image_edit` capability support this mode
 - URLs must be public `http(s)` URLs; base64 data is uploaded to storage automatically
 
@@ -316,7 +318,10 @@ Usage is tracked against the API key's own credit pool (`api_credits`), not the 
 - `seedream-5.0` - Best quality, great default choice (10 free daily)
 - `nano-banana-2` - Best default for multi-image editing / composition (5 free daily)
 - `nano-banana-pro` - Higher quality image editing (1 free daily)
-- `gpt-image-1.5` - Strong image editing option via Replicate-backed path
+- `gpt-image-2` - Strong image generation and editing with multi-tier resolution. Use `quality` param (default `1k`):
+  - `1k` / `low`: 5–30 credits/image
+  - `2k` / `medium`: 8–35 credits/image
+  - `4k` / `high`: 12–60 credits/image
 - `z-image-turbo` - Free, fastest generation
 
 **Video models:**
